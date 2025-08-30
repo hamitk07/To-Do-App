@@ -1,17 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_1/utils/todo_list.dart';
 
 void main() {
-  runApp(const HomePage());
+  runApp(HomePage());
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+  HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final List todolist = [
+    ["Wake up", false],
+    ["Drink water", false],
+    ["Code flutter", false],
+  ];
+
+  void chechBoxChanged(int index) {
+    setState(() {
+      todolist[index][1] = !todolist[index][1];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        // App Bar
         appBar: AppBar(
           title: Text(
             "To Do List",
@@ -25,7 +44,18 @@ class HomePage extends StatelessWidget {
           backgroundColor: Colors.black,
           elevation: 0,
         ),
-        body: Row(),
+        // Body
+        body: ListView.builder(
+          itemCount: todolist.length,
+          itemBuilder: (BuildContext context, index) {
+            return TodoList(
+              taskName: todolist[index][0],
+              taskCompleted: todolist[index][1],
+              onChanged: (value) => chechBoxChanged(index),
+            );
+          },
+        ),
+        // FAB
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: SizedBox(
           width: 80,
@@ -41,6 +71,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ),
+        // Bottom Nav Bar
         bottomNavigationBar: BottomAppBar(
           color: Colors.black,
           shape: CircularNotchedRectangle(),
