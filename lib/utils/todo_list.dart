@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-class TodoList extends StatelessWidget {
-  TodoList({
+enum SampleItem { itemOne, itemTwo, itemThree }
+
+class TodoList extends StatefulWidget {
+  const TodoList({
     super.key,
     required this.taskName,
     required this.taskCompleted,
@@ -11,6 +13,13 @@ class TodoList extends StatelessWidget {
   final String taskName;
   final bool taskCompleted;
   final Function(bool?)? onChanged;
+
+  @override
+  State<TodoList> createState() => _TodoListState();
+}
+
+class _TodoListState extends State<TodoList> {
+  SampleItem? selectedItem;
 
   @override
   Widget build(BuildContext context) {
@@ -27,29 +36,105 @@ class TodoList extends StatelessWidget {
             Transform.scale(
               scale: 1.2,
               child: Checkbox(
-                value: taskCompleted,
-                onChanged: onChanged,
+                value: widget.taskCompleted,
+                onChanged: widget.onChanged,
                 fillColor: MaterialStateProperty.resolveWith<Color>((
                   Set<MaterialState> states,
                 ) {
                   if (states.contains(MaterialState.selected)) {
-                    return Colors.black; // İşaretli olduğunda renk
+                    return Colors.black; // işaretliyken
                   }
-                  return const Color.fromARGB(
-                    0,
-                    158,
-                    158,
-                    158,
-                  ); // İşaretsiz durum rengi
+                  return Colors.black; // işaretsizken
                 }),
               ),
             ),
-            Text(
-              taskName,
-              style: const TextStyle(
-                color: Color.fromARGB(255, 198, 212, 4),
-                fontSize: 20,
+            Expanded(
+              child: Text(
+                widget.taskName,
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 198, 212, 4),
+                  fontSize: 20,
+                  decoration: widget.taskCompleted
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
+                  decorationColor: Colors.white,
+                  decorationThickness: 2,
+                ),
               ),
+            ),
+            PopupMenuButton<SampleItem>(
+              icon: Icon(
+                Icons.more_vert,
+                color: const Color.fromARGB(255, 198, 212, 4),
+              ),
+              onSelected: (SampleItem item) {
+                switch (item) {
+                  case SampleItem.itemOne:
+                    print("Edit seçildi");
+                    // Buraya düzenleme fonksiyonunu yaz
+                    break;
+                  case SampleItem.itemTwo:
+                    print("Duplicate seçildi");
+                    // Buraya silme fonksiyonunu yaz
+                    break;
+                  case SampleItem.itemThree:
+                    print("Delete seçildi");
+                    // Buraya paylaşma fonksiyonunu yaz
+                    break;
+                }
+              },
+              initialValue: selectedItem,
+              itemBuilder: (BuildContext context) =>
+                  <PopupMenuEntry<SampleItem>>[
+                    const PopupMenuItem<SampleItem>(
+                      value: SampleItem.itemOne,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Edit',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Icon(Icons.edit_outlined),
+                        ],
+                      ),
+                    ),
+                    const PopupMenuItem<SampleItem>(
+                      value: SampleItem.itemTwo,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Duplicate',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Icon(Icons.copy),
+                        ],
+                      ),
+                    ),
+                    const PopupMenuItem<SampleItem>(
+                      value: SampleItem.itemThree,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Delete',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Icon(Icons.delete_outline),
+                        ],
+                      ),
+                    ),
+                  ],
             ),
           ],
         ),
