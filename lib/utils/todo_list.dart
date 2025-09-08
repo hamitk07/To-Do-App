@@ -2,23 +2,20 @@ import 'package:flutter/material.dart';
 
 enum SampleItem { itemOne }
 
-class TodoList extends StatefulWidget {
-  const TodoList({
+class TodoList extends StatelessWidget {
+  TodoList({
     super.key,
     required this.taskName,
     required this.taskCompleted,
-    this.onChanged,
+    required this.onChanged,
+    required this.onDelete,
   });
 
   final String taskName;
   final bool taskCompleted;
   final Function(bool?)? onChanged;
+  final VoidCallback onDelete;
 
-  @override
-  State<TodoList> createState() => _TodoListState();
-}
-
-class _TodoListState extends State<TodoList> {
   SampleItem? selectedItem;
 
   @override
@@ -36,8 +33,8 @@ class _TodoListState extends State<TodoList> {
             Transform.scale(
               scale: 1.2,
               child: Checkbox(
-                value: widget.taskCompleted,
-                onChanged: widget.onChanged,
+                value: taskCompleted,
+                onChanged: onChanged,
                 fillColor: MaterialStateProperty.resolveWith<Color>((
                   Set<MaterialState> states,
                 ) {
@@ -50,11 +47,11 @@ class _TodoListState extends State<TodoList> {
             ),
             Expanded(
               child: Text(
-                widget.taskName,
+                taskName,
                 style: TextStyle(
                   color: const Color.fromARGB(255, 198, 212, 4),
                   fontSize: 20,
-                  decoration: widget.taskCompleted
+                  decoration: taskCompleted
                       ? TextDecoration.lineThrough
                       : TextDecoration.none,
                   decorationColor: Colors.white,
@@ -71,7 +68,7 @@ class _TodoListState extends State<TodoList> {
                 switch (item) {
                   case SampleItem.itemOne:
                     print("Edit seçildi");
-                    // Buraya düzenleme fonksiyonunu yaz
+                    onDelete();
                     break;
                 }
               },

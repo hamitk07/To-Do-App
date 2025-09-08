@@ -23,6 +23,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void deleteTask(int index) {
+    setState(() {
+      todolist.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -45,11 +51,13 @@ class _HomePageState extends State<HomePage> {
         // Body
         body: ListView.builder(
           itemCount: todolist.length,
-          itemBuilder: (BuildContext context, index) {
+          itemBuilder: (context, index) {
             return TodoList(
+              key: ValueKey(todolist[index][0]),
               taskName: todolist[index][0],
               taskCompleted: todolist[index][1],
               onChanged: (value) => chechBoxChanged(index),
+              onDelete: () => deleteTask(index),
             );
           },
         ),
