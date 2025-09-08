@@ -15,8 +15,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final List todolist = [
     ["Wake up", false],
-    ["Drink water", false],
-    ["Code flutter", false],
   ];
 
   void chechBoxChanged(int index) {
@@ -63,7 +61,70 @@ class _HomePageState extends State<HomePage> {
           child: FloatingActionButton(
             backgroundColor: Colors.black,
             shape: const CircleBorder(),
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled:
+                    true, // klavye açıldığında yukarı kayması için
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                ),
+                builder: (context) {
+                  String newTask = "";
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(
+                        context,
+                      ).viewInsets.bottom, // klavye boşluğu
+                      left: 20,
+                      right: 20,
+                      top: 20,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextField(
+                          autofocus: true,
+                          decoration: const InputDecoration(
+                            labelText: "New Task",
+                            border: OutlineInputBorder(),
+                          ),
+                          onChanged: (value) {
+                            newTask = value;
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 20),
+                          width: 150,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (newTask.isNotEmpty) {
+                                setState(() {
+                                  todolist.add([newTask, false]);
+                                });
+                                Navigator.pop(context); // sheet’i kapat
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              foregroundColor: const Color.fromARGB(
+                                255,
+                                198,
+                                212,
+                                4,
+                              ),
+                            ),
+                            child: const Text("Add"),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
             child: const Icon(
               Icons.add,
               size: 40,

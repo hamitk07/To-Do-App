@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum SampleItem { itemOne, itemTwo, itemThree }
+enum SampleItem { itemOne }
 
 class TodoList extends StatefulWidget {
   const TodoList({
@@ -73,14 +73,6 @@ class _TodoListState extends State<TodoList> {
                     print("Edit seçildi");
                     // Buraya düzenleme fonksiyonunu yaz
                     break;
-                  case SampleItem.itemTwo:
-                    print("Duplicate seçildi");
-                    // Buraya silme fonksiyonunu yaz
-                    break;
-                  case SampleItem.itemThree:
-                    print("Delete seçildi");
-                    // Buraya paylaşma fonksiyonunu yaz
-                    break;
                 }
               },
               initialValue: selectedItem,
@@ -88,38 +80,6 @@ class _TodoListState extends State<TodoList> {
                   <PopupMenuEntry<SampleItem>>[
                     const PopupMenuItem<SampleItem>(
                       value: SampleItem.itemOne,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Edit',
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Icon(Icons.edit_outlined),
-                        ],
-                      ),
-                    ),
-                    const PopupMenuItem<SampleItem>(
-                      value: SampleItem.itemTwo,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Duplicate',
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Icon(Icons.copy),
-                        ],
-                      ),
-                    ),
-                    const PopupMenuItem<SampleItem>(
-                      value: SampleItem.itemThree,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
